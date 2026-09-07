@@ -1,0 +1,10 @@
+.env
+apps/
+models/
+runtime/
+logs/
+downloads/
+__pycache__/
+
+*.sqlite
+*.sqlite-*
