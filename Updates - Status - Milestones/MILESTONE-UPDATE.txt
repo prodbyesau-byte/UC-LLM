@@ -1,0 +1,65 @@
+UC-LLM — Milestone update
+=========================
+
+Foundation desktop launcher restored
+-------------------------------------
+The standalone Windows launcher is now included in `desktop/` again:
+
+- `desktop/Local Agent.exe` opens the local SillyTavern workspace in a WebView2 window.
+- `desktop/build.ps1` rebuilds the executable with the local .NET Framework compiler.
+- `open-app.ps1` automatically builds the launcher if the executable is missing.
+- `update.ps1 -Component Desktop` rebuilds only the desktop launcher.
+- `update.ps1` (without a component) rebuilds the launcher as part of the full update.
+
+Use from the project folder:
+
+```powershell
+.\open-app.ps1
+```
+
+or:
+
+```powershell
+.\desktop\Local Agent.exe
+```
+
+The launcher expects the installed project layout (`apps`, `models` and `runtime`) next to
+the `desktop` folder. It starts the local services itself and keeps the PowerShell window
+hidden. Close the app window when finished, then run `.\stop.ps1` to release GPU/RAM.
+
+Foundation closed
+-----------------
+
+The current Foundation uses SillyTavern's native chat persistence and native
+OpenAI context budgeting rather than an unfinished parallel SQLite/memory layer.
+The context benchmark is now compatible with both Windows PowerShell and PowerShell 7
+and records its measurements in `logs/context-benchmark.json`.
+
+Foundation is therefore ready for Milestone 1. A custom SQLite conversation database,
+summarization pipeline or semantic long-term memory system is intentionally deferred
+until it is defined as a Milestone 1 feature instead of being treated as unfinished
+Foundation infrastructure.
+
+Pre-Milestone 1 theme update
+----------------------------
+
+The desktop interface now uses the **LOCAL AGENT — LUXE** theme: warm cream surfaces,
+charcoal typography, restrained taupe accents, quiet borders and reduced visual noise.
+The existing chat, search, launcher and backend behavior is unchanged. The requested
+Files top-level area and unified file registry remain explicitly deferred to Milestone 1.
+
+The top settings hotbar is now hidden by default. The LUXE UI exposes only three
+navigation tabs: **CHAT**, **PROFILE** and **SETTINGS**. SETTINGS reveals the existing
+SillyTavern controls without deleting or resetting them.
+
+Milestone One tool foundation
+-----------------------------
+
+The existing registry is now the persistence boundary for a loopback-only
+structured Tool Router. The LUXE navigation includes a compact Files view fed by
+the existing file service. Local tools cover explicit-root incremental indexing,
+search/inspect, verified file operations, approval-gated destructive actions,
+duplicate and disk analysis, document/PDF/TXT/Markdown/CSV support, real XLSX
+workbooks, deterministic WAV analysis/cache, and multi-tool execution. Outputs
+are registered in the same File Manager. See the Milestone One section in
+`README.md` for API, permissions, dependencies, and known format limitations.

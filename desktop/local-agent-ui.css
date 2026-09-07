@@ -1,0 +1,188 @@
+#local-agent-navigation {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  z-index: 10000;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  transform: translateX(-50%);
+  background: var(--luxe-surface, rgba(250, 248, 244, .96));
+  border: 1px solid var(--luxe-border);
+  border-radius: 999px;
+  box-shadow: 0 6px 24px rgba(68, 58, 47, .1);
+}
+
+/* The local connection is managed by the app; do not show SillyTavern's
+   generic "No connection..." status in the navigation or API drawers. */
+#API-status-top,
+.online_status_text {
+  display: none !important;
+}
+
+.welcomeShortcuts,
+.welcomeButtons {
+  display: none !important;
+}
+
+.local-agent-hidden-control {
+  display: none !important;
+}
+
+#local-agent-tools-button,
+#send_but.local-agent-send-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 3px;
+  border: 1px solid var(--luxe-border);
+  border-radius: 8px;
+  background: var(--luxe-stone);
+  color: var(--luxe-text);
+  font: 700 18px/1 'Segoe UI Symbol', 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+#local-agent-tools-button:hover,
+#send_but.local-agent-send-button:hover {
+  background: var(--luxe-accent);
+  color: var(--luxe-card);
+}
+
+.local-agent-tab {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  background: transparent;
+  color: var(--luxe-muted);
+  font: 500 11px/1 var(--n2llm-ui, 'Segoe UI'), sans-serif;
+  letter-spacing: .12em;
+  cursor: pointer;
+}
+.local-agent-tab:hover,
+.local-agent-tab.active {
+  background: var(--luxe-stone);
+  color: var(--luxe-text);
+}
+.local-agent-tab.active { box-shadow: inset 0 -2px 0 var(--n2llm-red, #b51f2a); }
+#local-agent-welcome {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 620px;
+  margin: 10px auto 24px;
+  padding: 14px 18px;
+  color: var(--luxe-text);
+  background: rgba(255, 253, 249, .85);
+  border: 1px solid var(--luxe-border);
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(68, 58, 47, .06);
+  font-size: 15px;
+  line-height: 1.55;
+}
+#local-agent-welcome strong { font-weight: 650; }
+#local-agent-welcome span:not(.local-agent-clippy span) { color: var(--luxe-muted); }
+.local-agent-clippy {
+  position: relative;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 4px solid #9d8d78;
+  border-radius: 50%;
+  background: #f0dfbd;
+  box-shadow: inset -4px -3px 0 rgba(117, 104, 90, .16);
+}
+.local-agent-clippy::before,
+.local-agent-clippy::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  width: 5px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4f463d;
+}
+.local-agent-clippy::before { left: 10px; }
+.local-agent-clippy::after { right: 10px; }
+.local-agent-clippy span {
+  position: absolute;
+  left: 10px;
+  bottom: 7px;
+  width: 14px;
+  height: 6px;
+  border-bottom: 2px solid #4f463d;
+  border-radius: 50%;
+}
+#local-agent-files {
+  display: none;
+  max-width: 900px;
+  margin: 88px auto 32px;
+  padding: 22px;
+  color: var(--luxe-text);
+  background: rgba(255, 253, 249, .9);
+  border: 1px solid var(--luxe-border);
+  border-radius: 14px;
+}
+#local-agent-files.open { display: block; }
+.local-agent-files-header { display: flex; align-items: center; justify-content: space-between; }
+.local-agent-files-header h2 { margin: 0; font-size: 22px; font-weight: 600; }
+.local-agent-files-header button,
+.local-agent-file-card button {
+  border: 1px solid var(--luxe-border); border-radius: 8px; padding: 6px 10px;
+  background: var(--luxe-stone); color: var(--luxe-text); cursor: pointer;
+}
+.local-agent-files-status { color: var(--luxe-muted); }
+.local-agent-file-list { display: grid; gap: 8px; }
+.local-agent-file-card {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  border: 1px solid var(--luxe-border); border-radius: 9px;
+}
+.local-agent-file-card strong { min-width: 180px; }
+.local-agent-file-card span { flex: 1; color: var(--luxe-muted); font-size: 12px; }
+#local-agent-pages {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  overflow: auto;
+  padding: 92px 24px 42px;
+  background: var(--luxe-bg);
+}
+#local-agent-pages.open { display: block; }
+.local-agent-page { display: none; max-width: 980px; margin: 0 auto; }
+.local-agent-page.active { display: block; }
+.local-agent-page-heading { margin: 0 0 28px; border-bottom: 1px solid var(--luxe-border); padding-bottom: 18px; }
+.local-agent-page-heading h1 { margin: 5px 0 8px; font-size: 34px; font-weight: 650; }
+.local-agent-page-heading p, .local-agent-page-card p { color: var(--luxe-muted); line-height: 1.6; }
+.local-agent-eyebrow { color: var(--luxe-muted); font-size: 11px; letter-spacing: .16em; }
+.local-agent-page-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.local-agent-page-card {
+  padding: 24px; background: var(--luxe-card); border: 1px solid var(--luxe-border);
+  border-radius: 14px; box-shadow: 0 5px 18px rgba(68,58,47,.05);
+}
+.local-agent-page-card h2 { margin-top: 0; font-size: 20px; }
+.local-agent-theme-label { display: block; margin-bottom: 8px; color: var(--luxe-muted); }
+.local-agent-page-card select { min-width: 180px; padding: 9px 12px; border: 1px solid var(--luxe-border); border-radius: 8px; background: var(--luxe-card); color: var(--luxe-text); }
+
+:root[data-theme="dark"] #local-agent-pages,
+:root[data-theme="dark"] #local-agent-files { background: #0b0b0c; color: #f2eee8; }
+:root[data-theme="dark"] .local-agent-page-card,
+:root[data-theme="dark"] #local-agent-welcome { background: #1b1b1f; color: #f2eee8; border-color: rgba(255,255,255,.12); }
+:root[data-theme="dark"] #local-agent-navigation { background: #141416; border-color: rgba(255,255,255,.14); }
+:root[data-theme="dark"] .local-agent-tab.active { background: #d92f2f; color: #fff; }
+.local-agent-avatar {
+  width: 58px; height: 58px; display: grid; place-items: center; border-radius: 16px;
+  background: var(--luxe-stone); color: var(--luxe-text); font-weight: 700; letter-spacing: .08em;
+}
+.local-agent-status { color: #687b60; font-size: 11px; letter-spacing: .1em; font-weight: 700; }
+.local-agent-action {
+  border: 1px solid var(--luxe-border); border-radius: 8px; padding: 9px 13px;
+  background: var(--luxe-stone); color: var(--luxe-text); cursor: pointer;
+}
+@media (max-width: 600px) {
+  #local-agent-navigation { top: 8px; }
+  .local-agent-tab { padding: 8px 11px; font-size: 10px; }
+  #local-agent-pages { padding: 78px 14px 28px; }
+  .local-agent-page-grid { grid-template-columns: 1fr; }
+}

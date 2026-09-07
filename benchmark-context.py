@@ -3,12 +3,16 @@ import json,pathlib,subprocess,time,httpx,tempfile
 root=pathlib.Path(__file__).resolve().parent
 config_path=root/'config.json'
 config=json.loads(config_path.read_text(encoding='utf-8-sig'))
+original_context=config['CONTEXT_SIZE']
 client=httpx.Client(timeout=180,trust_env=False)
 base=f"http://127.0.0.1:{config['LLM_PORT']}"
 def ps(script):
     # Windows services can inherit pipe handles; file-backed capture does not wait for their EOF.
     with tempfile.TemporaryFile(mode='w+',encoding='utf-8') as output:
-        r=subprocess.run(['pwsh','-NoProfile','-Command',script],cwd=root,stdout=output,stderr=output,text=True)
+        shell=next((name for name in ('pwsh','powershell') if __import__('shutil').which(name)),None)
+        if not shell:
+            raise RuntimeError('PowerShell is required for the context benchmark.')
+        r=subprocess.run([shell,'-NoProfile','-ExecutionPolicy','Bypass','-Command',script],cwd=root,stdout=output,stderr=output,text=True)
         output.seek(0); text=output.read()
     if r.returncode: raise RuntimeError(text)
     return text
@@ -44,5 +48,7 @@ try:
         chosen=size
 finally:
     (root/'logs/context-benchmark.json').write_text(json.dumps({'criteria':{'max_prefill_seconds':45,'min_generation_tokens_per_second':25,'min_free_vram_mb':900,'min_free_ram_mb':1500,'input_fraction':.72},'selected_context':chosen,'measurements':results},indent=2))
-    load(chosen)
-    print('Selected context:',chosen,flush=True)
+    config['CONTEXT_SIZE']=original_context
+    config_path.write_text(json.dumps(config,indent=2),encoding='utf-8')
+    load(original_context)
+    print('Measured maximum:',chosen,'; restored configured context:',original_context,flush=True)

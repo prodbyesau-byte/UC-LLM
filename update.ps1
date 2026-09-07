@@ -1,4 +1,4 @@
-param([ValidateSet('All','SillyTavern','SearXNG','Inference')][string]$Component='All')
+param([ValidateSet('All','SillyTavern','SearXNG','Inference','Desktop')][string]$Component='All')
 . "$PSScriptRoot/services.ps1"
 function Checked($Exe, $Arguments, $Directory=$Root) {
     Push-Location $Directory
@@ -53,6 +53,9 @@ try {
         if (!$old.StartsWith($Root+[IO.Path]::DirectorySeparatorChar) -or !$dest.StartsWith($Root+[IO.Path]::DirectorySeparatorChar)) { throw 'Backup path outside project.' }
         Move-Item -LiteralPath $old -Destination $dest
         Move-Item -LiteralPath $target -Destination $old
+    }
+    if ($Component -in 'All','Desktop') {
+        Checked powershell.exe @('-NoProfile','-ExecutionPolicy','Bypass','-File',"$Root/desktop/build.ps1")
     }
     Checked "$Root/runtime/python/Scripts/python.exe" @("$Root/configure.py")
     Checked "$Root/runtime/python/Scripts/python.exe" @("$Root/patch_extensions.py")
