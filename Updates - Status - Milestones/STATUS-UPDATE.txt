@@ -1,0 +1,110 @@
+Her er den status officiel på nuværende projektstatus for UC-LLM.
+UC-LLM / Local AI — Status
+1. Foundation — stort set implementeret
+Følgende er allerede bygget og fungerede/testedes i den tidligere Codex-session:
+- ✅ Lokal LLM
+  - Qwen3.5-4B
+  - Q6_K GGUF
+  - Kører lokalt via llama.cpp
+  - GPU acceleration på RTX 3060 Laptop 6 GB
+- ✅ OpenAI-kompatibelt lokalt LLM API
+  - localhost
+  - Ingen cloud-LLM nødvendig
+- ✅ SillyTavern
+  - Fungerer som eksisterende chat/frontend foundation
+- ✅ SearXNG
+  - Lokal search service
+  - Flere søgemaskiner
+  - Google/Bing/Brave m.fl.
+- ✅ Web research
+  - Search
+  - Besøg websider
+  - Udtræk relevant tekst
+  - Send research til modellen
+  - Kilde-URLs/citations
+  - Webindhold behandles som untrusted content
+- ✅ Offline chat
+  - Modellen kan fortsat bruges uden internet
+- ✅ Lifecycle management
+  - Start
+  - Stop
+  - Restart
+  - Status
+  - Update
+  - Port-conflict protection
+  - Process ownership protection
+- ✅ Hardwareoptimering
+  - Ryzen 7 5800H
+  - 16 GB RAM
+  - RTX 3060 Laptop 6 GB
+  - GPU offload
+  - Flash Attention
+  - KV-cache tuning
+- ✅ Standalone Windows-app påbegyndt
+  - Local Agent.exe
+  - WebView2-baseret interface
+  - Backend kan startes uden synligt terminalvindue
+  - README viser, at denne del eksisterede lokalt
+  - ⚠️ desktop/-mappen mangler i det nuværende GitHub-upload og bør uploades, hvis den stadig findes lokalt.
+2. Præcis hvor Codex stoppede
+Den tidligere Codex-session stoppede midt i memory/context-systemet.
+Den sidste kendte aktivitet var:
+🔧 SQLite conversation persistence
+Codex var ved at implementere:
+- Hele samtalen gemmes permanent i SQLite.
+- Alle beskeder bevares.
+- Tidligere AI-svar bevares.
+- Message edits bevares.
+- Chat history skal kunne overleve genstart.
+- SQLite skulle integreres direkte med den eksisterende SillyTavern/chat-lagring.
+Status: PARTIAL / IN PROGRESS
+🔧 Token & Context Manager
+Codex var samtidig ved at bygge et system, hvor modellen ikke bare får hele samtalen hver gang.
+Planen/implementationen var:
+Model Context
+│
+├── System instructions
+├── Conversation summary
+├── Relevant older messages
+├── Recent messages
+├── Relevant web passages
+├── Current user message
+└── Reserved output tokens
+Systemet skulle:
+- måle tokenforbruget før modelkald,
+- bruge modellens rigtige tokenizer,
+- holde requests under modelens context limit,
+- reservere plads til svaret,
+- opsummere gammel samtale,
+- hente relevante ældre beskeder,
+- begrænse web research til relevante passager,
+- aldrig bare smide hele chatten ind i context,
+- afvise request sikkert hvis selv minimum-context er for stort.
+Status: PARTIAL / IN PROGRESS
+🔧 Context benchmark
+Codex var også ved at undersøge:
+Hvor stort et context window RTX 3060 6 GB kan håndtere med acceptabel hastighed og RAM/VRAM-reserve.
+
+Repoets config.json står aktuelt til 65,536 tokens, mens tidligere gennemførte tests i README'en beskriver 16,384 tokens.
+Det skal derfor benchmarkes/verificeres igen.
+Status: INCOMPLETE / NEEDS VERIFICATION
+3. Det næste der skal gøres
+Før Milestone 1 bør Codex:
+Inspect → Recover → Finish → Test
+Specifikt:
+1. Inspicér hele eksisterende kodebase.
+2. Find alle halvfærdige SQLite-ændringer.
+3. Find halvfærdig token/context-manager.
+4. Fortsæt eksisterende implementation frem for at starte forfra.
+5. Færdiggør persistent chat history.
+6. Færdiggør summarization/relevant-history system.
+7. Færdiggør tokenizer-baseret budgettering.
+8. Benchmark context size på den faktiske hardware.
+9. Regression-test LLM.
+10. Regression-test SearXNG/web research.
+11. Regression-test citations.
+12. Regression-test chat/history.
+13. Test restart/persistence.
+14. Færdiggør standalone Windows-app.
+15. Byg og test den faktiske .exe.
+Derefter er Foundation færdig, og Milestone 1 kan begynde.
