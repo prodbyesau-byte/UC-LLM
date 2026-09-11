@@ -3,6 +3,8 @@ import json, pathlib, time
 import httpx
 from lxml import html
 ROOT=pathlib.Path(__file__).resolve().parent
+LOG_DIR=ROOT/'logs'
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 C=json.loads((ROOT/'config.json').read_text())
 LLM=f"http://127.0.0.1:{C['LLM_PORT']}"
 ST=f"http://127.0.0.1:{C['SILLYTAVERN_PORT']}"
@@ -74,5 +76,5 @@ def failure():
     assert answer and 'http' not in answer
     return {'unavailable_search_status':r.status_code,'fallback_answer':answer}
 run('10_search_failure',failure)
-(ROOT/'logs/test-results.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf-8')
+(LOG_DIR/'test-results.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf-8')
 assert all(v['pass'] for k,v in report.items() if k[0].isdigit()),'One or more checks failed'
